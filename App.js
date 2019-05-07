@@ -9,32 +9,42 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import { createStore } from 'redux';
+import { Provider, connect } from 'react-redux';
+import configureStore from './store';
 
-// Define action types
-const types = {
-  INCREMENT: 'INCREMENT',
-}
+const initialState = {};
 
-// Define a reducer
-const reducer = (state, action) => {
-  if (action.type === types.INCREMENT) {
-    return {count: state.count + 1}
+const store = configureStore(initialState);
+
+class Main extends Component {
+  state = {
+    num: 1
+  };
+
+  add = () => {
+    this.setState({ num: this.state.num + 1 });
+    this.props.testAction();
   }
-  return state
+
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>{this.state.num}</Text>
+        <Button title="Add" onPress={this.add} />
+      </View>
+    )
+  }
 }
 
-// Define the initial state of our store
-const initialState = {count: 0}
 
-// Create a store, passing our reducer function and our initial state
-const store = createStore(reducer, initialState)
+import { testAction } from './main/action'
+const mapStateToProps = (state, ownProps) => {
+  return {...state};
+};
 
-store.dispatch({type: types.INCREMENT})
-store.dispatch({type: types.INCREMENT})
-store.dispatch({type: types.INCREMENT})
+const mapActionCreators = {testAction};
 
-class HomeScreen extends Component {
+class HomeScreenView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,35 +54,25 @@ class HomeScreen extends Component {
   static navigationOptions = {
     title: "Home"
   };
-
-  componentDidMount() {
-    // setInterval(() => (
-    //   this.setState(previousState => (
-    //     { num: previousState.num++ }
-    //   ))
-    // ), 1000);
-  }
-  add = () => {
-    this.setState({num: this.state.num++}, () => {
-      console.warn(`abcd${this.state.num}`);
-    });
-  }
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Home screen{store.getState().count}</Text>
-        <Text>{this.state.num}</Text>
-
+        <Text>Home screen{this.props.main.num}</Text>
         <Button
           title="Go to Jane's profile"
           onPress={() => navigate("Profile", { name: "Jane" })}
         />
-        <Button title="Add" onPress={this.add} />
+        <Main testAction={this.props.testAction} />
       </View>
     );
   }
 }
+
+const HomeScreen = connect(
+  mapStateToProps,
+  mapActionCreators
+)(HomeScreenView);
 
 class ProfileScreen extends Component {
   static navigationOptions = {
@@ -99,7 +99,9 @@ const MainNavigator = createStackNavigator({
 
 const App = createAppContainer(MainNavigator);
 
-export default App;
+const ReduxProvider = () => <Provider store={store}><App /></Provider>
+
+export default ReduxProvider;
 
 const styles = StyleSheet.create({
   container: {
