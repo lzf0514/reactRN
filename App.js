@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Provider, connect } from 'react-redux';
+import {default as AButton} from '@ant-design/react-native/lib/button';
 import configureStore from './store';
 
 const initialState = {};
@@ -30,7 +31,7 @@ class Main extends Component {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>{this.state.num}</Text>
-        <Button title="Add" onPress={this.add} />
+        <AButton type="primary" onPress={this.add}>Add</AButton>
       </View>
     )
   }
