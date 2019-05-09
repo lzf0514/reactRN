@@ -46,24 +46,35 @@ const mapStateToProps = (state, ownProps) => {
 const mapActionCreators = {testAction};
 
 class HomeScreenView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      num: 1
-    };
+  state = {
+    num: 1
   }
-  static navigationOptions = {
-    // title: "Home"
-    headerTitle: () => <Text>Home custom title</Text>,
-    headerRight: (
-      <AButton onPress={() => alert('This is a button!')}>Info</AButton>
-    ),
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      // title: "Home"
+      headerTitle: () => <Text>Home custom title</Text>,
+      headerRight: (
+        <AButton onPress={navigation.getParam('increaseCount')}>+1</AButton>
+      ),
+    };
   };
+
+  componentDidMount = () => {
+    this.props.navigation.setParams({increaseCount: this.increaseCount})
+  }
+
+
+  increaseCount = () => {
+    this.setState({num: this.state.num + 1});
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Home screen{this.props.main.num}</Text>
+        <Text>state:{JSON.stringify(this.state)}</Text>
         <Button
           title="Go to Jane's profile"
           onPress={() => navigate("Profile", { name: "Jane" })}
