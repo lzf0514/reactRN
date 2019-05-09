@@ -97,7 +97,9 @@ class ProfileScreen extends Component {
       headerStyle: {
         backgroundColor: '#fff'
       },
-      headerTintColor: '#f4511e'
+      headerTintColor: '#f4511e',
+      headerRight: (<Button title="More" onPress={() => alert('Alert More!')} />),
+      headerLeft: (<Button title="Menu" onPress={() => alert('Menu sideBar!')} />)
     };
   }
 
