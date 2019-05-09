@@ -76,18 +76,36 @@ const HomeScreen = connect(
 )(HomeScreenView);
 
 class ProfileScreen extends Component {
-  static navigationOptions = {
-    title: "Profile"
-  };
+  static navigationOptions = ({navigation}) => {
+    return {
+      title: `Profile${navigation.getParam('name')}`,
+      headerStyle: {
+        backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    };
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Profile screen</Text>
+        <Text>Profile screen {this.props.navigation.getParam('name', 'default name')}</Text>
         <Button
           title="Go to Home"
           onPress={() => navigate("Home", { name: "Home" })}
         />
+
+        <AButton type="primary" onPress={() => {
+          this.props.navigation.push('Profile', { name: `Name ${Math.floor(Math.random()*100)}` })
+        }}>Go to Profile... again</AButton>
+
+        <AButton type="primary" onPress={() => {
+          this.props.navigation.setParams({ name: `Name ${Math.floor(Math.random()*100)}` })
+        }}>Update title</AButton>
       </View>
     );
   }
