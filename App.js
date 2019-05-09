@@ -160,9 +160,24 @@ const MoreNavigator = createStackNavigator({
 });
 
 const Tabs = createBottomTabNavigator({
-  Main: MainNavigator,
-  MoreTab: MoreNavigator
-});
+    Main: MainNavigator,
+    MoreTab: MoreNavigator
+  },
+  {
+    defaultNavigationOptions: {
+      tabBarOptions: {
+        activeTintColor: '#fff',
+        inactiveTintColor: '#000',
+        labelStyle: {
+          fontSize: 16,
+        },
+        style: {
+          backgroundColor: '#f4511e',
+        },
+      },
+    }
+  }
+);
 
 const App = createAppContainer(Tabs);
 
