@@ -11,6 +11,7 @@ import { Platform, StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer, createBottomTabNavigator } from "react-navigation";
 import { Provider, connect } from 'react-redux';
 import {default as AButton} from '@ant-design/react-native/lib/button';
+import { Icon } from '@ant-design/react-native';
 import configureStore from './store';
 
 const initialState = {};
@@ -138,6 +139,26 @@ const MainNavigator = createStackNavigator({
     headerTitleStyle: {
       fontWeight: 'bold',
     },
+  },
+  navigationOptions: {
+    tabBarIcon: () => (
+      <View style={{ width: 32, height: 32, margin: 5 }}>
+        <Icon size="lg" color="#fff" name="home" />
+          <View style={{
+            position: 'absolute',
+            right: -6,
+            top: -3,
+            backgroundColor: '#fff',
+            borderRadius: 9,
+            width: 18,
+            height: 18,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Text style={{ color: '#000', padding: 3, fontSize: 10, fontWeight: 'bold' }}>3</Text>
+          </View>
+      </View>
+    )
   }
 });
 
@@ -156,7 +177,28 @@ class MoreScreen extends Component {
 }
 
 const MoreNavigator = createStackNavigator({
-  More: MoreScreen
+  More: MoreScreen,
+}, {
+  navigationOptions: {
+    tabBarIcon: () => (
+      <View style={{ width: 32, height: 32, margin: 5 }}>
+        <Icon size="lg" color="#fff" name="team" />
+          <View style={{
+            position: 'absolute',
+            right: -6,
+            top: -3,
+            backgroundColor: '#fff',
+            borderRadius: 9,
+            width: 18,
+            height: 18,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Text style={{ color: '#000', padding: 3, fontSize: 10, fontWeight: 'bold' }}>12</Text>
+          </View>
+      </View>
+    )
+  }
 });
 
 const Tabs = createBottomTabNavigator({
@@ -169,7 +211,7 @@ const Tabs = createBottomTabNavigator({
         activeTintColor: '#fff',
         inactiveTintColor: '#000',
         labelStyle: {
-          fontSize: 16,
+          fontSize: 12,
         },
         style: {
           backgroundColor: '#f4511e',
