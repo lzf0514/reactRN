@@ -8,7 +8,7 @@
 
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer, createBottomTabNavigator } from "react-navigation";
 import { Provider, connect } from 'react-redux';
 import {default as AButton} from '@ant-design/react-native/lib/button';
 import configureStore from './store';
@@ -53,7 +53,11 @@ class HomeScreenView extends Component {
     };
   }
   static navigationOptions = {
-    title: "Home"
+    // title: "Home"
+    headerTitle: () => <Text>Home custom title</Text>,
+    headerRight: (
+      <AButton onPress={() => alert('This is a button!')}>Info</AButton>
+    ),
   };
   render() {
     const { navigate } = this.props.navigation;
@@ -80,12 +84,9 @@ class ProfileScreen extends Component {
     return {
       title: `Profile${navigation.getParam('name')}`,
       headerStyle: {
-        backgroundColor: '#f4511e',
+        backgroundColor: '#fff'
       },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
+      headerTintColor: '#f4511e'
     };
   }
 
@@ -113,10 +114,26 @@ class ProfileScreen extends Component {
 
 const MainNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
-  Profile: { screen: ProfileScreen }
+  Profile: { screen: ProfileScreen },
+},{
+  initialRouteName: 'Home',
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  },
+  navigationOptions: {
+    tabBarLabel: 'Home Tab'
+  }
 });
 
-const App = createAppContainer(MainNavigator);
+const Tabs = createBottomTabNavigator({ MainNavigator });
+
+const App = createAppContainer(Tabs);
 
 const ReduxProvider = () => <Provider store={store}><App /></Provider>
 
