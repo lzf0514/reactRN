@@ -138,13 +138,31 @@ const MainNavigator = createStackNavigator({
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-  },
-  navigationOptions: {
-    tabBarLabel: 'Home Tab'
   }
 });
 
-const Tabs = createBottomTabNavigator({ MainNavigator });
+class MoreScreen extends Component {
+  static navigationOptions = {
+    title: 'More Screen'
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>More Screen</Text>
+      </View>
+    );
+  }
+}
+
+const MoreNavigator = createStackNavigator({
+  More: MoreScreen
+});
+
+const Tabs = createBottomTabNavigator({
+  Main: MainNavigator,
+  MoreTab: MoreNavigator
+});
 
 const App = createAppContainer(Tabs);
 
